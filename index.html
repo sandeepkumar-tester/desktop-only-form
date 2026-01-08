@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SquadStack Application Form</title>
+  <meta charset="UTF-8">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 30px;
+    }
+    .container {
+      max-width: 750px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 6px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    button {
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1558b0;
+    }
+  </style>
+</head>
+
+<body>
+
+<script>
+  // BLOCK MOBILE DEVICES
+  if (/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent)) {
+    document.body.innerHTML =
+      "<h2>This form can be filled only on a Laptop/Desktop.</h2>";
+  }
+</script>
+
+<div class="container">
+<h2>SquadStack Application Form</h2>
+
+<form id="appForm">
+
+<input name="email" placeholder="Email Address" required>
+<input name="full_name" placeholder="Full Name" required>
+<input name="mobile" placeholder="Registered Mobile Number" required>
+
+<select name="age_bracket" required>
+  <option value="">Age Bracket</option>
+  <option>18–25</option>
+  <option>26–35</option>
+  <option>36+</option>
+</select>
+
+<select name="gender" required>
+  <option value="">Gender</option>
+  <option>Male</option>
+  <option>Female</option>
+  <option>Other</option>
+</select>
+
+<input name="qualification" placeholder="Highest Qualification" required>
+
+<select name="further_education" required>
+  <option value="">Pursuing further education?</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<select name="marital_status" required>
+  <option value="">Marital Status</option>
+  <option>Single</option>
+  <option>Married</option>
+</select>
+
+<input name="children_count" placeholder="Number of Children">
+<input name="youngest_child_age" placeholder="Youngest Child Age">
+
+<input name="languages" placeholder="Languages Fluent" required>
+
+<label>Attach Resume</label>
+<input type="file" id="resume">
+
+<select name="sales_experience" required>
+  <option value="">Sales Experience?</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<input name="industry" placeholder="Industry Worked In">
+<input name="work_days" placeholder="Days you wish to work per month" required>
+
+<select name="laptop" required>
+  <option value="">Personal Laptop/Desktop?</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<input name="internet_type" placeholder="Internet Connection Type" required>
+
+<label>Attach Wifi Receipt</label>
+<input type="file" id="wifi">
+
+<input name="hospital_visits" placeholder="Hospital visits per month">
+
+<select name="work_preference" required>
+  <option value="">Preferred work setup</option>
+  <option>Home</option>
+  <option>Office</option>
+  <option>Hybrid</option>
+</select>
+
+<select name="screen_time" required>
+  <option value="">Comfortable with 10 hrs screen time?</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<select name="training_fee" required>
+  <option value="">Agree to Rs 499 refundable training fee?</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<input name="current_situation" placeholder="Current Situation" required>
+<input name="duration" placeholder="How long do you want to continue?" required>
+<input name="join_reason" placeholder="Reason to join SquadStack" required>
+<input name="login_hours" placeholder="Daily Login Hours" required>
+
+<select name="declaration" required>
+  <option value="">Declaration</option>
+  <option>I Agree</option>
+</select>
+
+<button type="submit">Submit Application</button>
+</form>
+
+<p id="msg"></p>
+</div>
+
+<script>
+async function fileToBase64(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("appForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const resumeFile = document.getElementById("resume").files[0];
+  const wifiFile = document.getElementById("wifi").files[0];
+
+  const formData = Object.fromEntries(new FormData(this));
+
+  formData.resume = resumeFile ? await fileToBase64(resumeFile) : "";
+  formData.wifi_receipt = wifiFile ? await fileToBase64(wifiFile) : "";
+  formData.device = navigator.userAgent;
+
+  fetch("YOUR_WEB_APP_URL_HERE", {
+    method: "POST",
+    body: JSON.stringify(formData)
+  })
+  .then(() => {
+    document.getElementById("msg").innerText =
+      "Application submitted successfully.";
+    this.reset();
+  })
+  .catch(() => {
+    document.getElementById("msg").innerText =
+      "Submission failed. Please try again.";
+  });
+});
+</script>
+
+</body>
+</html>
